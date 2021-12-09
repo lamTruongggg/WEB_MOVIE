@@ -1,0 +1,241 @@
+
+    <link rel="stylesheet" href="../assets/css/aos.css">
+    <!-- Bootstrap CSS -->
+    <link rel="apple-touch-icon" href="../assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
+    <!-- Load Require CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <!-- Font CSS -->
+    <link href="../assets/css/boxicon.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+<!-- Load Tempalte CSS -->
+    <link rel="stylesheet" href="../assets/css/templatemo.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link href="../assets/css/main.css" rel="stylesheet" >
+   <link rel="stylesheet" href="../assets/css/nicepage.css">
+    <link rel="stylesheet" href="../assets/css/Home.css">
+  <div style="margin-top: 70px;" class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title">{{viewTitles}}</h2>
+                </div>
+            <center><b> <h3 style="margin-top:20px; color:green;">{{viewTitle}}</h3></b></center>
+                <div class="card-body">
+<form method="POST" action="/Movies/add" autocomplete="off">
+<input type="hidden" name="id" value="{{movie._id}}">
+                        <div class="form-row">
+                            <div class="name">Name Movie</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" value="{{movie.fullName}}" type="text" name="fullName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Description</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea  style="width: 100%; "  class="input--style-5"  type="text" id="des" name="description" required>
+                                       {{movie.description}} </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Amount of time</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" value="{{movie.timing}}" type="number" id ="timing" name="timing" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Video Url</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5"  value="{{movie.video}}" type="url" id="video" name="video" required>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-row">
+                            <div class="name">Image URL</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" value="{{movie.image}}" type="url" id ="image" name="image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">
+                                Card type</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select   onchange="test(this)" name="subject">
+                                         {{#if movie}}
+                                            <option disabled="disabled" selected="selected">{{movie.genre}} </option>
+                                            {{else}}
+                                            <option disabled="disabled" selected="selected">Genre</option>  
+                                            {{/if}}   
+                                            {{#each genre}}                                         
+                                            <option >{{this.name}}</option>
+                                            {{/each}}
+                                        </select>
+                                        <div  class="select-dropdown"></div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;                              
+                                    <div style="width:32% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select  onchange="testt(this)" name="subject">
+                                            {{#if movie}}
+                                            <option disabled="disabled" selected="selected">{{movie.country}} </option>
+                                            {{else}}
+                                            <option disabled="disabled" selected="selected">Country</option>  
+                                            {{/if}}                                             
+                                            {{#each country}}                                         
+                                            <option >{{this.name}}</option>
+                                            {{/each}}                                          
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;                              
+                                    <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select  onchange="testtt(this)" name="subject">
+                                            {{#if movie}}
+                                            <option disabled="disabled" selected="selected">{{movie.rated}} </option>
+                                            {{else}}
+                                            <option disabled="disabled" selected="selected">Rated</option>  
+                                            {{/if}}
+                                             {{#each rated}}                                         
+                                            <option >{{this.name}}</option>
+                                            {{/each}}                                        
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-row">
+                            <div class="name">
+                               Person </div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select   onchange="test1(this)" name="subject">
+                                            {{#if director}}
+                                            <option disabled="disabled" selected="selected">{{director.name}} </option>
+                                            {{else}}
+                                            <option disabled="disabled" selected="selected">Director</option>  
+                                            {{/if}}
+                                            {{#each person}}                                         
+                                            <option >{{this.name}}</option>
+                                            {{/each}}
+                                        </select>
+                                        <div  class="select-dropdown"></div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;                              
+                                    <div style="width:32% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select  onchange="test2(this)" name="subject">
+                                            {{#if actor}}
+                                            <option disabled="disabled" selected="selected">{{actor.name}} </option>
+                                            {{else}}
+                                            <option disabled="disabled" selected="selected">Actor </option>
+                                            {{/if}}
+                                             {{#each person}}                                         
+                                            <option >{{this.name}}</option>
+                                            {{/each}}                                          
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                             <input id="genre" value="{{movie.genre}}" name="genre" type="hidden" >
+                              <input id="country" value="{{movie.country}}" name="country"  type="hidden">
+                               <input id="rated" value="{{movie.rated}}" name="rated" type="hidden" >
+                              <input id="director" value="{{director.name}}" name="director" type="hidden">
+                               <input id="actor" value="{{actor.name}}" name="actor" type="hidden" >
+                            <button class="btn btn--radius-2 btn--red" style="width: 100%;" type="submit">Register</button>
+                            </div>                                               
+                    </form>
+                     <div style="margin-top: 20px;">
+                            <a class="btn btn--radius-2 btn--red" style="width: 100%;"  href="/Movies">List</a>
+                        </div>    
+</div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/bootstrap.bundle.min.js">
+    </script>
+    <!-- Lightbox -->
+    <script src="../assets/js/fslightbox.js"></script>
+    <script>
+        fsLightboxInstances['gallery'].props.loadOnlyCurrentSource = true;
+    </script>
+    <!-- Load jQuery require for isotope -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <!-- Isotope -->
+    <script src="../assets/js/isotope.pkgd.js"></script>
+    <!-- Page Script -->
+    <script>
+
+      function test(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("genre").value = x;
+}
+  function testt(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("country").value = x;
+}
+  function testtt(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("rated").value = x;
+}
+function test1(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("director").value = x;
+}
+function test2(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("actor").value = x;
+}
+        $(window).load(function() {
+            // init Isotope
+            var $projects = $('.projects').isotope({
+                itemSelector: '.project',
+                layoutMode: 'fitRows'
+            });
+            $(".filter-btn").click(function() {
+                var data_filter = $(this).attr("data-filter");
+                $projects.isotope({
+                    filter: data_filter
+                });
+                $(".filter-btn").removeClass("active");
+                $(".filter-btn").removeClass("shadow");
+                $(this).addClass("active");
+                $(this).addClass("shadow");
+                return false;
+            });
+        });
+    </script>
+    <!-- Templatemo -->
+    <script src="../assets/js/templatemo.js"></script>
+    <!-- Custom -->
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="../assets/vendor/select2/select2.min.js"></script>
+    <script src="../assets/vendor/datepicker/moment.min.js"></script>
+    <script src="../assets/vendor/datepicker/daterangepicker.js"></script>
+    <script src="../assets/js/global.js"></script>

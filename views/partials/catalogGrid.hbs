@@ -1,0 +1,219 @@
+<!-- page title -->
+	<section class="section section--first section--bg" data-bg="../img/section/section.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">Catalog grid</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="#">Home</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">Catalog grid</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+
+	<!-- filter -->
+	<div class="filter">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<form action="/catalogGridFilter" method="post" >
+					<div class="filter__content">
+						<div class="filter__items">
+							<!-- filter item -->
+							<div class="filter__item" id="filter__genre">
+								<span class="filter__item-label">GENRE:</span>
+
+								<div class="filter__item-btn dropdown-toggle"  id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<input type="button" id ="genre" name="genre" value="ALL">
+
+						  			<input value ="" name="genre" type="hidden" >
+									<span></span>
+								</div>
+
+								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+									<li>All</li>
+									{{#each genres}}
+									<li>{{this.name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+							<!-- end filter item -->
+
+							<!-- filter item -->
+							<div class="filter__item" id="filter__quality">
+								<span class="filter__item-label">COUNTRY:</span>
+
+								<div class="filter__item-btn dropdown-toggle"  id="filter-quality" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<input type="button" id ="country" name="country" value="ALL">
+									<input value ="All" name="country" type="hidden" >
+									<span></span>
+								</div>
+
+								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-quality">
+										<li>All</li>
+									{{#each countrys}}
+									<li>{{this.name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+							<!-- end filter item -->
+							<!-- filter item -->
+							<div class="filter__item" id="filter__country">
+								<span class="filter__item-label">RATED:</span>
+
+								<div class="filter__item-btn dropdown-toggle" id="filter-country" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<input type="button" id ="rated" name="rated" value="ALL">
+									<input value ="All" name="rated" type="hidden" >
+									<span></span>
+								</div>
+
+								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-country">
+										<li>All</li>
+									{{#each rateds}}
+									<li>{{this.name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+							<!-- end filter item -->
+							<!-- filter item -->
+							<div class="filter__item" id="filter__director">
+								<span class="filter__item-label">DIRECTOR:</span>
+
+								<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-director" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<input type="button" id ="director" name="director" value="ALL">
+									<span></span>
+								</div>
+
+								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-director">
+									{{#each countrys}}
+									<li>{{this.name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+							<!-- end filter item -->
+							<!-- filter item -->
+							<div class="filter__item" id="filter__actor">
+								<span class="filter__item-label">ACTOR:</span>
+
+								<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-actor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<input type="button" id ="actor" name="actor" value="ALL">
+									<span></span>
+								</div>
+
+								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-actor">
+									{{#each countrys}}
+									<li>{{this.name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+							<!-- end filter item -->
+						</div>
+						<!-- filter btn -->
+						<button class="filter__btn" type="submit">apply filter</button>
+						<!-- end filter btn -->
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end filter -->
+    <!-- catalog -->
+	<div class="catalog">
+		<div class="container">
+			<div class="row">
+				<!-- card -->
+							{{#each movieBanner}}
+						<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+							<div class="card">
+								<div class="card__cover">
+									<img src="{{this.image}}" alt="">
+									<a href="/detailMovie/{{this.fullName}}" class="card__play">
+										<i class="icon ion-ios-play"></i>
+									</a>
+								</div>
+								<div class="card__content">
+									<h3 class="card__title"><a href="#">{{this.fullName}}</a></h3>
+									<span class="card__category">
+										<a href="#">{{this.genre}}</a>
+									</span>
+									<span class="card__rate"><i class="icon ion-ios-star"></i>8.4</span>
+								</div>
+							</div>
+						</div>
+						<!-- end card -->
+							{{/each}}
+
+				<!-- paginator -->
+				<div class="col-12">
+					<ul class="paginator">
+						<li class="paginator__item paginator__item--prev">
+							<a href="#"><i class="icon ion-ios-arrow-back"></i></a>
+						</li>
+						<li class="paginator__item"><a href="#">1</a></li>
+						<li class="paginator__item paginator__item--active"><a href="#">2</a></li>
+						<li class="paginator__item"><a href="#">3</a></li>
+						<li class="paginator__item"><a href="#">4</a></li>
+						<li class="paginator__item paginator__item--next">
+							<a href="#"><i class="icon ion-ios-arrow-forward"></i></a>
+						</li>
+					</ul>
+				</div>
+				<!-- end paginator -->
+			</div>
+		</div>
+	</div>
+	<!-- end catalog -->
+
+		<!-- expected premiere -->
+	<section class="section section--bg" data-bg="../img/section/section.jpg">
+		<div class="container">
+			<div class="row">
+				<!-- section title -->
+				<div class="col-12">
+					<h2 class="section__title">Expected premiere</h2>
+				</div>
+				<!-- end section title -->
+				{{#each movieBanner}}
+				<!-- card -->
+				<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+					<div class="card">
+						<div class="card__cover">
+							<img src="{{this.image}}" alt="">
+							<a href="/detailMovie/{{this.fullName}}" class="card__play">
+								<i class="icon ion-ios-play"></i>
+							</a>
+						</div>
+						<div class="card__content">
+							<h3 class="card__title"><a href="#">{{this.fullName}}</a></h3>
+							<span class="card__category">
+								<a href="#">{{this.genre}}</a>
+							</span>
+							<span class="card__rate"><i class="icon ion-ios-star"></i>8.4</span>
+						</div>
+					</div>
+				</div>
+				<!-- end card -->
+				{{/each}}			
+
+				<!-- section btn -->
+				<div class="col-12">
+					<a href="#" class="section__btn">Show more</a>
+				</div>
+				<!-- end section btn -->
+			</div>
+		</div>
+	</section>
+	<!-- end expected premiere -->
+
+	

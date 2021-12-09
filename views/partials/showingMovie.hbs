@@ -1,0 +1,160 @@
+
+    <link rel="stylesheet" href="../assets/css/aos.css">
+    <!-- Bootstrap CSS -->
+    <link rel="apple-touch-icon" href="../assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
+    <!-- Load Require CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../assets/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <!-- Font CSS -->
+    <link href="../assets/css/boxicon.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+<!-- Load Tempalte CSS -->
+    <link rel="stylesheet" href="../assets/css/templatemo.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link href="../assets/css/main.css" rel="stylesheet" >
+   <link rel="stylesheet" href="../assets/css/nicepage.css">
+    <link rel="stylesheet" href="../assets/css/Home.css">
+<link rel="stylesheet" href="../style/table.css" />
+<div style="margin-top: 120px;">
+    <div style="display: flex;">    &nbsp;&nbsp;&nbsp;&nbsp;   
+   <a href="/Movies" class="btnn" >BACK</a>   &nbsp;&nbsp;&nbsp;&nbsp;   
+    <h3> <b>SCHEDULE SHOWING MOVIE</b></h3>
+    </div>
+    <form method="post" action="/Movies/showingMovie/add">
+    <div style="margin-left:30px;" class="form-row">
+                            <div class="name">
+                               The Movie 
+                               </div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select   onchange="test1(this)" name="subject">
+                                            <option disabled="disabled" selected="selected">Movie</option>  
+                                            {{#each movies}}                                         
+                                            <option >{{this.fullName}}</option>
+                                            {{/each}}
+                                        </select>
+                            <input id="fullName"  name="fullName" type="hidden" >
+                                        <div  class="select-dropdown"></div>
+                                    </div>                                    
+                                   
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div style="margin-left:30px; width: 36.5%; ">
+                             <div class="form-row">
+                            <div class="name">Price</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" autocomplete="off"  type="number" min="45000" id="price" name="price" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Start</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="date" id ="dateStart" name="dateStart" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">End</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5"   type="date" id="dateEnd" name="dateEnd" required>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div style="margin-left:30px;" class="form-row">
+                            <div class="name">
+                               Person 
+                               </div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                        <select   onchange="test(this)" name="subject">
+                                            <option disabled="disabled" selected="selected"> CINEMA</option>                                   
+                                            <option >cinema A</option>
+                                             <option >cinema B</option>
+                                        </select>
+                                         <input id="cinema" value="cinema A" name="cinema"  type="hidden">
+                                        <div  class="select-dropdown"></div>
+                                    </div>
+                                         &nbsp;&nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div style="width:30% ;" class="rs-select2 js-select-simple select--no-search">
+                                      <input style="width: 220px; height:50px; background-color:#4232c2; color:white; border-radius: 5px;" type="submit">
+                                      </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+
+</form>
+<table class="styled-table">
+<thead>
+<tr>
+    <th>NAME MOVIE</th>
+    <th>PRICE</th>
+    <th>START</th>
+    <th>END</th>
+    <th>CINEMA</th>
+    <th>ACTION</th>
+</tr>
+</thead>
+<tbody>
+{{#each showings}}
+<tr >
+    <td >{{this.fullName}}</td>
+    <td class="pass">{{this.price}}</td>
+    <td class="pass">{{this.dateStart}}</td>
+    <td class="pass">{{this.dateEnd}}</td>
+    <td>{{this.cinema}}</td>
+    <td ><a  class="btnn" href="/Movies/showingMovie/edit/{{this._id}}" >EDIT</a>
+     &nbsp;&nbsp;&nbsp;&nbsp; 
+    <a href="/Movies/showingMovie/delete/{{this._id}}" onclick="return ConfirmDelete()"  class="btnn">DELETE</a>
+    </td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+<script>
+    function ConfirmDelete()
+            {
+              var x = confirm("Are you sure you want to delete?");
+              if (x)
+                  return true;
+              else
+                return false;
+            }
+      function test(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("cinema").value = x;
+}
+ function test1(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("fullName").value = x;
+}
+</script>
+<!-- Templatemo -->
+    <script src="../assets/js/templatemo.js"></script>
+    <!-- Custom -->
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="../assets/vendor/select2/select2.min.js"></script>
+    <script src="../assets/vendor/datepicker/moment.min.js"></script>
+    <script src="../assets/vendor/datepicker/daterangepicker.js"></script>
+    <script src="../assets/js/global.js"></script>

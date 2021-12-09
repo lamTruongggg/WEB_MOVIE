@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" href="../style/table.css" />
+<div style="margin-top: 120px;">
+    <div style="display: flex;">    &nbsp;&nbsp;&nbsp;&nbsp;   
+    <h3> <b>VIEW LIST OF INFOR USER</b></h3>  &nbsp;&nbsp;&nbsp;&nbsp;
+     &nbsp;&nbsp;&nbsp;&nbsp;    
+     <a href="/Movies/cartMoney" class="btnn" >MONEY</a> 
+    </div>
+<table class="styled-table">
+<thead>
+<tr>
+    <th>NAME </th>
+    <th>PHONE</th>
+    <th>EMAIL</th>
+    <th>SEX</th> 
+    <th>ACTIVE</th>
+    <th>ACTION</th>
+</tr>
+</thead>
+<tbody>
+{{#each users}}
+<tr >
+    <td >{{this.fullName}}</td>
+    <td class="pass">0{{this.phone}}</td>
+    <td class="pass">{{this.email}}</td>
+    <td class="pass">{{this.sex}}</td>
+    <td>{{this.isActive}}</td>
+    <td >
+     &nbsp;&nbsp;&nbsp;&nbsp; 
+    <a href="/Users/delete/{{this._id}}" onclick="return ConfirmDelete()"  class="btnn">DELETE</a>
+    </td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+<script>
+    function ConfirmDelete()
+            {
+              var x = confirm("Are you sure you want to delete?");
+              if (x)
+                  return true;
+              else
+                return false;
+            }
+</script>

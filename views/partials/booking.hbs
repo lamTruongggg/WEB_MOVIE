@@ -1,0 +1,227 @@
+ 
+<link rel="stylesheet" href="../style/booking.css" />
+<div class="body" style="margin-top:30px;">
+ <div class="movie-containers" >
+      <label>The movie:</label>
+      <select id="movie">
+        <option value="{{showing.price}}">{{showing.fullName}}(${{showing.price}}) </option>
+      </select>
+    </div>
+
+    <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small>N/A</small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small>Selected</small>
+      </li>
+      <li>
+        <div class="seat occupied"></div>
+        <small>Occupied</small>
+      </li>
+    </ul>
+
+    <div class="containers">
+      <div class="screen"></div>     
+      <div class="row">         
+          {{#each cinema}}
+          {{#ifEquals this.hell "a"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myforma{{this.seat}}">
+         <a onclick="document.getElementById('myforma{{this.seat}}').submit();">a - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+      <div class="row">
+        {{#each cinema}}
+          {{#ifEquals this.hell "b"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myformb{{this.seat}}">
+         <a onclick="document.getElementById('myformb{{this.seat}}').submit();">b - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+      <div class="row">
+         {{#each cinema}}
+          {{#ifEquals this.hell "c"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myformc{{this.seat}}">
+         <a onclick="document.getElementById('myformc{{this.seat}}').submit();">c - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+      <div class="row">
+        {{#each cinema}}
+          {{#ifEquals this.hell "d"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myformd{{this.seat}}">
+         <a onclick="document.getElementById('myformd{{this.seat}}').submit();">d - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+      <div class="row">
+         {{#each cinema}}
+          {{#ifEquals this.hell "e"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myforme{{this.seat}}">
+         <a onclick="document.getElementById('myforme{{this.seat}}').submit();">e - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+      <div class="row">
+        {{#each cinema}}
+          {{#ifEquals this.hell "f"}}
+             {{#ifEquals this.static 0}}
+         <div class="seat">
+             <form action="/Movies/addCart" method="post" id="myformf{{this.seat}}">
+         <a onclick="document.getElementById('myformf{{this.seat}}').submit();">f - {{this.seat}}</a> 
+         <input name="seat" value="{{this.seat}}" type="hidden">
+          <input name="hell" value="{{this.hell}}" type="hidden">
+          <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
+          <input name="fullName" value="{{this.name}}" type="hidden"> 
+            </form>
+            </div>
+        {{else}}
+        <div class="seat occupied"></div>
+          {{/ifEquals }}
+        {{/ifEquals }}
+        {{/each}}
+      </div>
+    </div>
+
+    <p class="text">
+      You have selected <span id="count">0</span> seats for a price of $<span
+        id="total"
+        >0</span
+      >
+    </p>
+</div>
+    <script> 
+           function test(a) { 
+    var x =  document.getElementById("idshowings"); //crossbrowser solution =)
+  var y =  document.getElementById("fullNames");
+  document.getElementById("idshowing").value = x;
+  document.getElementById("fullName").value = y;
+};
+        const containers = document.querySelector('.containers');
+const seats = document.querySelectorAll('.row .seat:not(.occupied)');
+const count = document.getElementById('count');
+const total = document.getElementById('total');
+const movieSelect = document.getElementById('movie');
+
+populateUI();
+
+let ticketPrice = +movieSelect.value;
+
+// Save selected movie index and price
+function setMovieData(movieIndex, moviePrice) {
+  localStorage.setItem('selectedMovieIndex', movieIndex);
+  localStorage.setItem('selectedMoviePrice', moviePrice);
+}
+
+// Update total and count
+function updateSelectedCount() {
+  const selectedSeats = document.querySelectorAll('.row .seat.selected');
+
+  const seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
+
+  localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
+
+  const selectedSeatsCount = selectedSeats.length;
+
+  count.innerText = selectedSeatsCount;
+  total.innerText = selectedSeatsCount * ticketPrice;
+  
+  setMovieData(movieSelect.selectedIndex, movieSelect.value);
+}
+
+// Get data from localstorage and populate UI
+function populateUI() {
+  const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+
+  if (selectedSeats !== null && selectedSeats.length > 0) {
+    seats.forEach((seat, index) => {
+      if (selectedSeats.indexOf(index) > -1) {
+        seat.classList.add('selected');
+      }
+    });
+  }
+
+  const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+
+  if (selectedMovieIndex !== null) {
+    movieSelect.selectedIndex = selectedMovieIndex;
+  }
+}
+
+// Movie select event
+movieSelect.addEventListener('change', e => {
+  ticketPrice = +e.target.value;
+  setMovieData(e.target.selectedIndex, e.target.value);
+  updateSelectedCount();
+});
+
+// Seat click event
+containers.addEventListener('click', e => {
+  if (
+    e.target.classList.contains('seat') &&
+    !e.target.classList.contains('occupied')
+  ) {
+    e.target.classList.toggle('selected');
+
+    updateSelectedCount();
+  }
+});
+    </script>

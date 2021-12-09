@@ -1,0 +1,62 @@
+
+	<div style="margin-top: 80px;" class="sign section--bg" data-bg="img/section/section.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="sign__content">
+						<!-- registration form -->
+						<form action="/Users/add" method="post" class="sign__form">
+							<a href="index.html" class="sign__logo">
+								<img src="img/logo.svg" alt="">
+							</a>
+
+            <center><b> <h3 style="color:cornflowerblue;">{{viewTitle}}</h3></b></center>
+                        <input type="hidden" name="id" value="{{user._id}}">
+							<div class="sign__group">
+								<input type="text" id ="fullName" name ="fullName" class="sign__input" placeholder="Name" required>
+							</div>
+
+							<div class="sign__group">
+								<input type="text" class="sign__input" name="phone" id="phone" onblur="validate3()" onkeyup="phonecheck()" placeholder="Phone" required>
+							</div>
+							<div class="sign__group">
+								<input type="text" class="sign__input" name = "email" id="email" min="3" max="50" onblur="validate4()" onkeyup="check()"  placeholder="Email" required>
+							</div>
+
+							<div class="sign__group">
+								<input type="password" class="sign__input" id ="password" name="password" placeholder="Password" required>
+							</div>
+                            <div class="sign__group">
+								<input type="password" class="sign__input" id="cpassword" name ="cpassword" placeholder="Comfirm Password" required>
+							</div>
+                            <div class="sign__group">
+								<input type="date" class="sign__input" id="dob" name ="dob" placeholder="Date of Birth" required>
+							</div>
+                            <div class="sign__group"  >
+                           <select id="category" onchange="test(this)" class="sign__input"  name="category">                            
+                                <option value="Female" data-value="Female">Female</option>
+                                <option value="Male" data-value="Male">Male</option>
+                                </select></div>
+                                <input id="sex" value="Female" name="sex" type="hidden">
+							<div class="sign__group sign__group--checkbox">
+								<input id="remember" name="remember" type="checkbox" checked="checked">
+								<label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
+							</div>
+							
+							<button class="sign__btn" type="submit">Sign up</button>
+
+							<span class="sign__text">Already have an account? <a href="/Users">Sign in!</a></span>
+						</form>
+						<!-- registration form -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script>
+        function test(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("sex").value = x;
+};
+    </script>
