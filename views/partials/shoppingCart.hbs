@@ -51,8 +51,8 @@
                 <div class="col text-right" style="display: flex;">&dollar; <h3 name="total" id="total"></h3></div>              
             </div> 
             <form method="post" action="/Movies/checkpin">
-              <input  name="totalMoney" id="totalMoney"/>
-            <input type="submit" class="btnn">CHECKOUT</input>
+              <input  name="totalMoney" id="totalMoney" type="hidden" />
+            <input type="submit"  onclick="findTotal()" class="btnn">CHECKOUT</input>
             </form>
         </div>
     </div>

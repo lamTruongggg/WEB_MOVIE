@@ -47,7 +47,8 @@ app.get('/listUser', isAuth,(req,res)=>{
     const email = req.session.email;   
     userModel.find({}).then(users =>{
     res.render('partials/listUser.hbs',{
-        users: users.map(user => user.toJSON())
+        users: users.map(user => user.toJSON()),
+        query: email
     });
     })
 });
