@@ -128,6 +128,16 @@ app.get('/shoppingCart',isAuth, async(req,res)=>{
         query:email
     });
 });
+app.get('/historyCart',isAuth, async(req,res)=>{
+    const email = req.session.email;   
+    const cart = await cartModel.find({name:email, static:1});
+    const number = await cartModel.find({name:email,static:1}).count();
+    res.render('partials/cartMoney.hbs',{
+        carts: cart.map(cart => cart.toJSON()),
+        numbers: number.toString(),
+        query:email
+    });
+});
 app.get('/cartMoney',isAuth, async(req,res)=>{
     const email = req.session.email;   
     const cart = await cartModel.find({static:1});

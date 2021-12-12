@@ -35,16 +35,13 @@
 									</ul>
 								</li>
 								<!-- end dropdown -->
-
-								<li class="header__nav-item">
-									<a href="pricing.html" class="header__nav-link">Pricing Plan</a>
-								</li>
 								{{#if query }}
 								<li class="header__nav-item">
 									<a href="/Movies/shoppingCart" class="header__nav-link">My Cart</a>
-								</li>
-								{{/if}}
-
+								</li>						
+									<li class="header__nav-item">
+									<a href="/Movies/historyCart" class="header__nav-link">History Cart</a>
+								</li>	
 								<!-- dropdown -->
 								<li class="dropdown header__nav-item">
 									<a class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon ion-ios-more"></i></a>
@@ -56,6 +53,7 @@
 										<li><a href="/Error">404 Page</a></li>
 									</ul>
 								</li>
+									{{/if}}
 								<!-- end dropdown -->
 							</ul>
 							<!-- end header nav -->
