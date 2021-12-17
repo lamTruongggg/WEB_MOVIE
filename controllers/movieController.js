@@ -112,7 +112,7 @@ app.get('/list',(req,res)=>{
     );
 });
 */
-app.get('/',isAuth,(req,res)=>{
+app.get('/',isAdmin,isAuth,(req,res)=>{
     const email = req.session.email;   
     movieModel.find({}).then(movies =>{
         movies.dateCreate = new Date(movies.dateCreate);
