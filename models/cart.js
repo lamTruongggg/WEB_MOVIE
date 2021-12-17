@@ -23,6 +23,12 @@ const UserSchema =  new mongoose.Schema({
     },
     idshowing:{
         type:String
+    },
+    dateStart:{
+        type:Date
+    },
+    time:{
+        type:String
     }
 
 });

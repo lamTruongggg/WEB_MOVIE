@@ -14,6 +14,12 @@ const UserSchema =  new mongoose.Schema({
     },
     static:{
         type:Number
+    },
+    dateStart:{
+        type:Date
+    },
+    time:{
+        type:String
     }
 });
 const Cinema =  mongoose.model('cinemas',UserSchema);

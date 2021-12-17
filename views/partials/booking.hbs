@@ -1,11 +1,44 @@
  
 <link rel="stylesheet" href="../style/booking.css" />
-<div class="body" style="margin-top:30px;">
+<div class="body" style="margin-top:60px;">
  <div class="movie-containers" >
-      <label>The movie:</label>
+      <label>The Movie:</label>
       <select id="movie">
-        <option value="{{showing.price}}">{{showing.fullName}}(${{showing.price}}) </option>
+        <option value="{{showing.price}}">{{showing.fullName}} </option>
       </select>
+      <form method="post" action="/Movies/bookingMoviedate">
+        <input type="hidden" name="fullName" value="{{showing.fullName}}">
+       <label>The Date:</label>      
+      <select onchange="test1(this)"  id="date" style="width: 26%;">
+        {{#if dates}}
+        <option  disabled="disabled" selected="selected">{{dates}} </option>
+        {{else}}
+        <option  disabled="disabled" selected="selected">Date </option>
+        {{/if}}
+         {{#each date}}                                      
+                   <option> {{this.dateStart}}</option>
+         {{/each}}
+      </select>
+      <input id="dateStart" name="dateStart" type="hidden" >
+      <input style="width: 60px; border-radius:6px; background-color:white;" type="submit">
+      </form>
+            <form method="post" action="/Movies/bookingMovietime">
+       <label>The Time:</label>
+      <select id="times"  onchange="test2(this)" >
+         {{#if times}}
+        <option  disabled="disabled" selected="selected">{{times}} </option>
+        {{else}}
+        <option  disabled="disabled" selected="selected">Time </option>
+        {{/if}}
+         {{#each time}}                                         
+                   <option>{{this.time}}</option>
+         {{/each}}
+      </select>
+      <input type="hidden" name="fullName" value="{{showing.fullName}}">
+      <input value="{{dates}}" name="dateStart" type="hidden">
+      <input name="time" id="time" type="hidden">
+            <input style="width: 60px; border-radius:6px; background-color:white;" type="submit">
+      </form>
     </div>
 
     <ul class="showcase">
@@ -36,6 +69,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+            <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden"> 
             </form>
             </div>
         {{else}}
@@ -55,6 +90,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+            <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden">  
             </form>
             </div>
         {{else}}
@@ -74,6 +111,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+          <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden"> 
             </form>
             </div>
         {{else}}
@@ -93,6 +132,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+          <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden"> 
             </form>
             </div>
         {{else}}
@@ -112,6 +153,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+          <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden"> 
             </form>
             </div>
         {{else}}
@@ -131,6 +174,8 @@
           <input name="hell" value="{{this.hell}}" type="hidden">
           <input name="idshowing" value="{{this.fullName}}" type="hidden"> 
           <input name="fullName" value="{{this.name}}" type="hidden"> 
+          <input name="dateStart" value="{{this.dateStart}}" type="hidden"> 
+              <input name="time" value="{{this.time}}" type="hidden"> 
             </form>
             </div>
         {{else}}
@@ -149,6 +194,22 @@
     </p>
 </div>
     <script> 
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+      function test1(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("dateStart").value = convert(x);
+}
+ function test2(a) {
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+
+  document.getElementById("time").value = x;
+}
            function test(a) { 
     var x =  document.getElementById("idshowings"); //crossbrowser solution =)
   var y =  document.getElementById("fullNames");

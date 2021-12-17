@@ -9,14 +9,14 @@ const UserSchema =  new mongoose.Schema({
     dateStart:{
         type: Date
     },
-    dateEnd:{
-        type:Date
-    },
     cinema:{
         type:String
     },
     static:{
         type:Number
+    },
+    time:{
+        type:String
     }
 
 });

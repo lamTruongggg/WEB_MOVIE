@@ -16,6 +16,13 @@ const isAuth = (req,res, next)=>{
         res.redirect('/Users');
     }
 }
+const isAdmin = (req,res, next)=>{
+    if(req.session.isAdmin){
+        next();
+    }else{
+        res.redirect('/');
+    }
+}
 
 app.get('/register',(req,res)=>{
      const email = req.session.email;   
@@ -43,7 +50,7 @@ app.get('/list',(req,res)=>{
     );
 });
 */
-app.get('/listUser', isAuth,(req,res)=>{
+app.get('/listUser',isAdmin, isAuth,(req,res)=>{
     const email = req.session.email;   
     userModel.find({}).then(users =>{
     res.render('partials/listUser.hbs',{
@@ -56,6 +63,7 @@ function addRecord(req,res)
 {
     const body = req.body;
     const users =  new userModel(body);
+    users.isAdmin = 0;
     var datetime = new Date();
     users.dateCreate= datetime;
     try{
@@ -135,13 +143,14 @@ app.post('/login', async(req,res)=>{
     const users =  new userModel(body);
     userModel.findOne({email:users.email}).then(user=>{
         if(!user){            
-        return res.render('/Users',{view: "validate Email or Pasword"});
+         res.render('/Users',{view: "validate Email or Pasword"});
     }
     const pass = user.password;
     const validPassword =  bcrypt.compareSync(body.password,pass);
       if (!validPassword) {
-        return res.render('/Users',{view: "validate Email or Pasword"});
+         res.render('/Users',{view: "validate Email or Pasword"});
       }
+      if(user.isAdmin==1) req.session.isAdmin = true;
       req.session.isAuth =true;
       req.session.email = user.email;
       req.session.fullName = user.fullName;

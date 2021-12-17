@@ -20,6 +20,14 @@ const isAuth = (req,res, next)=>{
         res.redirect('/Users');
     }
 }
+
+const isAdmin = (req,res, next)=>{
+    if(req.session.isAdmin){
+        next();
+    }else{
+        res.redirect('/');
+    }
+}
 app.get('/send',(req,res)=>{
     const rand = makeid(24);
      const host=req.get('host');
@@ -37,13 +45,18 @@ else
 {console.log("email sended")};
     });
 });
-app.post('/showingMovie/add',isAuth,async(req,res)=>{
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+app.post('/showingMovie/add',isAdmin,isAuth,async(req,res)=>{
    const body = req.body;
-   const showing = showingModel(body);
+   const showing = new showingModel(body);
    console.log(req.body);
    showing.static=0;
-    try{
-      
+   try{
         showing.save();
         var i=1;
         var j=1;
@@ -51,7 +64,7 @@ app.post('/showingMovie/add',isAuth,async(req,res)=>{
         var check = req.body.cinema;
         var x=6;
         if(check=="cinema A") x = 9;
-                const info = await showingModel.findOne({static:0});
+                const info = await  showingModel.findOne({static:0});
         const id = info._id.toString();
         showingModel.findOneAndUpdate({_id:id},{ $set: { "static": 1}},{new:true},(err,showing)=>{
             if(err)
@@ -67,7 +80,7 @@ app.post('/showingMovie/add',isAuth,async(req,res)=>{
                   i=1;
         while(i<=x)
         {
-            const cinema = new cinemaModel({fullName:id,name:showing.fullName,seat:i,hell:a,static:0});
+            const cinema = new cinemaModel({fullName:id,name:showing.fullName,seat:i,hell:a,static:0,dateStart:showing.dateStart,time:showing.time});
             console.log(cinema);
             cinema.save();
             i++;
@@ -75,12 +88,14 @@ app.post('/showingMovie/add',isAuth,async(req,res)=>{
         j++
     };
         res.redirect('/Movies/showingMovie');
-    }catch(error)
+}
+catch(error)
     {
         res.status(500).send(error);
     }
+
 });
-app.post('/add',isAuth, async(req,res)=>{
+app.post('/add',isAdmin,isAuth, async(req,res)=>{
      console.log(req.body);
     if(req.body.id =='')
     {
@@ -110,12 +125,46 @@ app.get('/',isAuth,(req,res)=>{
 app.get('/bookingMovie/:id',isAuth ,async(req,res)=>{
     const email = req.session.email;   
     const cinemas = await cinemaModel.find({fullName:req.params.id});
-    console.log(cinemas);
+    const cinemass = await cinemaModel.findOne({fullName:req.params.id});
+    const date =  await showingModel.find({fullName:cinemass.name}); 
     const showing = await showingModel.findOne({_id:req.params.id});
     res.render('partials/booking.hbs',{
         query: email,
+        //cinema: cinemas.map(cinemas => cinemas.toJSON()),
+        showing: showing.toJSON(),
+        date:date.map(date => date.toJSON()),
+        time:date.map(date => date.toJSON())
+    });
+});
+app.post('/bookingMoviedate',isAuth, async(req,res)=>{
+    const email = req.session.email;   console.log(req.body);
+     const time = await showingModel.find({fullName:req.body.fullName,dateStart:req.body.dateStart});
+      const date =  await showingModel.find({fullName:req.body.fullName}); 
+         const showing = await showingModel.findOne({fullName:req.body.fullName});
+         const cinemas = await cinemaModel.find({name:req.body.fullName});
+       res.render('partials/booking.hbs',{
+        query: email,
+        //cinema: cinemas.map(cinemas => cinemas.toJSON()),
+        showing: showing.toJSON(),
+        date:date.map(date => date.toJSON()),
+        time:time.map(time => time.toJSON()),
+        dates:req.body.dateStart
+    });
+});
+app.post('/bookingMovietime',isAuth, async(req,res)=>{
+    const email = req.session.email;   console.log(req.body);
+     const time = await showingModel.find({fullName:req.body.fullName,dateStart:req.body.dateStart});
+      const date =  await showingModel.find({fullName:req.body.fullName}); 
+         const showing = await showingModel.findOne({fullName:req.body.fullName});
+         const cinemas = await cinemaModel.find({name:req.body.fullName,dateStart:req.body.dateStart,time:req.body.time});
+       res.render('partials/booking.hbs',{
+        query: email,
         cinema: cinemas.map(cinemas => cinemas.toJSON()),
-        showing: showing.toJSON()
+        showing: showing.toJSON(),
+        date:date.map(date => date.toJSON()),
+        time:time.map(time => time.toJSON()),
+        dates:req.body.dateStart,
+        times:req.body.time
     });
 });
 app.get('/shoppingCart',isAuth, async(req,res)=>{
@@ -138,7 +187,7 @@ app.get('/historyCart',isAuth, async(req,res)=>{
         query:email
     });
 });
-app.get('/cartMoney',isAuth, async(req,res)=>{
+app.get('/cartMoney',isAdmin,isAuth, async(req,res)=>{
     const email = req.session.email;   
     const cart = await cartModel.find({static:1});
     const number = await cartModel.find({static:1}).count();
@@ -234,14 +283,17 @@ app.post('/addCart',isAuth, async(req,res)=>{
         res.status(500).send(error);
     }
 });
-app.get('/showingMovie',isAuth,async(req,res)=>{
+app.get('/showingMovie',isAdmin,isAuth,async(req,res)=>{
     const email = req.session.email;   
+    const error = req.session.error;
+    delete req.session.error;
     var showing = await showingModel.find({});
     var movie = await movieModel.find({});
     res.render('partials/showingMovie.hbs',{
         query:email,
         showings: showing.map(showing => showing.toJSON()),
-        movies: movie.map(movie => movie.toJSON())
+        movies: movie.map(movie => movie.toJSON()),
+        error:error
     });
 });
 function addRecord(req,res)
@@ -291,7 +343,7 @@ function updateRecord(req,res)
             }
         });
 }
-app.get('/edit/:id',isAuth, async(req,res)=>{
+app.get('/edit/:id',isAdmin,isAuth, async(req,res)=>{
      var genre= await genreModel.find({});
     var country = await countryModel.find({});
     var rated =  await ratedModel.find({});
@@ -315,7 +367,7 @@ app.get('/edit/:id',isAuth, async(req,res)=>{
         
     
 });
-app.get('/delete/:id',isAuth,async(req,res)=>{
+app.get('/delete/:id',isAdmin,isAuth,async(req,res)=>{
     try{
         const movie = await movieModel.findByIdAndDelete(req.params.id,req.body);
         if(!movie) res.redirect('partials/404.hbs');
@@ -328,7 +380,7 @@ app.get('/delete/:id',isAuth,async(req,res)=>{
         res.status(500).send(error);
     }
 });
-app.get('/showingMovie/delete/:id',isAuth,async(req,res)=>{
+app.get('/showingMovie/delete/:id',isAdmin,isAuth,async(req,res)=>{
     try{
         const showing = await showingModel.findByIdAndDelete(req.params.id,req.body);
         const cinema = await cinemaModel.deleteMany({fullName:req.params.id})
@@ -358,7 +410,7 @@ app.post('/shoppingCart/delete',isAuth,async(req,res)=>{
         res.status(500).send(error);
     }
 });
-app.get('/add',isAuth, async(req,res)=>{   
+app.get('/add',isAdmin,isAuth, async(req,res)=>{   
     var genre= await genreModel.find({});
     var country = await countryModel.find({});
     var rated =  await ratedModel.find({});
