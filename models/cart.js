@@ -24,6 +24,9 @@ const UserSchema =  new mongoose.Schema({
     idshowing:{
         type:String
     },
+    idBill:{
+        type:String
+    },
     dateStart:{
         type:Date
     },

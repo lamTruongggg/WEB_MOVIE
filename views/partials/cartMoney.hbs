@@ -52,6 +52,7 @@
 </div>
 
     <script type="text/javascript">
+     window.addEventListener('load', 
 function findTotal(){
     var arr = document.getElementsByName('price');
     var tot=0;
@@ -60,6 +61,6 @@ function findTotal(){
             tot += parseInt(arr[i].value);
     }
     document.getElementById('total').innerHTML = tot;
-}
+}, false);
 
     </script>
