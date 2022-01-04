@@ -474,6 +474,15 @@ app.get('/listBill',isAuth,async(req,res)=>{
         bills: bill.map(bill => bill.toJSON())
     });
 });
+
+app.get('/listBillManage',isAdmin,isAuth,async(req,res)=>{
+    const email = req.session.email;      
+    var bill = await billModel.find({});
+    res.render('partials/listTransaction.hbs',{
+        query:email,
+        bills: bill.map(bill => bill.toJSON())
+    });
+});
 app.get('/detailBill/:id',isAuth,async(req,res)=>{
     const email = req.session.email;      
     var bill = await billModel.findOne({_id:req.params.id});

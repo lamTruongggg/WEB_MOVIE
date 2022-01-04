@@ -46,6 +46,7 @@
 									<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
 										<li><a href="/Movies">MOVIE</a></li>
 										<li><a href="/Users/listUser">USER</a></li>
+										<li><a href="/Movies/listBillManage">TRANSACTION</a></li>
 									</ul>
 								</li>
 									{{/if}}
@@ -70,6 +71,7 @@
   <div class="dropdown-content">
       {{#if query }}
    <a href="/Users/myProfile">My Profile</a>
+   <a href="/Movies/listBill">My Transaction</a>
   <a href="/Users/logout">Log Out</a>
   {{else}} 
    <a href="/Users">Log In</a>
