@@ -85,13 +85,15 @@ app.get('/detailMovie/:id',async(req,res)=>{
       var movie = await movieModel.findOne({fullName:req.params.id});
        var movieBanner = await movieModel.find({}).sort({_id:-1}).limit(6);      
        var showing = await showingModel.findOne({fullName:req.params.id}); 
+       console.log(showing);
        var check = null;
         if(req.session.email != null)
        check = await cartModel.findOne({name:req.session.email,static:1,fullName:req.params.id});
-       console.log(check);
        try{
-       if(showing && check )
+       if(showing)
        {
+           if(check)
+           {
            const comment = await commentModel.find({fullName:req.params.id});
      res.render('partials/detailMovie.hbs',{
          query:name,
@@ -100,7 +102,18 @@ app.get('/detailMovie/:id',async(req,res)=>{
           showing: showing.toJSON(),
             check: check.toJSON(),
             comment: comment.map(comment => comment.toJSON())
-    });}
+    });
+       }
+       else
+       {
+            res.render('partials/detailMovie.hbs',{
+         query:name,
+         movies: movie.toJSON(),
+          movieBanner:movieBanner.map(movie => movie.toJSON()),
+          showing: showing.toJSON()
+            });
+       }
+    }
     else
     {
          res.render('partials/detailMovie.hbs',{
