@@ -12,6 +12,7 @@ const directorModel = require('../models/director');
 const cinemaModel = require('../models/cinema');
 const actorModel = require('../models/actor');
 const paypal = require('paypal-rest-sdk');
+const commentModel = require('../models/comment');
 const nodemailer = require("nodemailer");
 const app = express();
 const isAuth = (req,res, next)=>{
@@ -50,7 +51,7 @@ function convert(str) {
   var date = new Date(str),
     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
     day = ("0" + date.getDate()).slice(-2);
-  return [date.getFullYear(), mnth, day].join("-");
+  return [date.getFullYear(), mnth, day].join(".");
 }
 app.post('/showingMovie/add',isAdmin,isAuth,async(req,res)=>{
    const body = req.body;

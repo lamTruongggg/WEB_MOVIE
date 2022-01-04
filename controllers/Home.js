@@ -3,11 +3,20 @@ const genreModel = require('../models/genre');
 const countryModel = require('../models/country')
 const path = require('path');
 const ratedModel = require('../models/rated');
+const cartModel = require('../models/cart');
 const movieModel =  require('../models/movie');
-const showingModel = require('../models/showing')
+const showingModel = require('../models/showing');
+const userModel = require('../models/user');
 const cinemaModel = require('../models/cinema');
+const commentModel = require('../models/comment');
+const { timeStamp } = require('console');
 const app = express();
-
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join(".");
+}
 
 const isAuth = (req,res, next)=>{
     if(req.session.isAuth){
@@ -56,19 +65,41 @@ app.get('/catalogList',async(req,res)=>{
          rateds: rated.map(rated => rated.toJSON()),
     });
 });
+app.post('/addComment',isAuth,async(req,res)=>{
+   const user = await userModel.findOne({email:req.session.email});
+   const comment = new commentModel(req.body);
+   comment.name = user.fullName;
+   const date = new Date();   
+   comment.dateCreate = convert(date);
+   const time = date.getMinutes();
+   if(time<10) {comment.time = date.getHours() +":" +"0"+ (date.getMinutes()).toString();}
+   else {comment.time =  date.getHours() +":" +(date.getMinutes()).toString();}
+   comment.like = 0;
+   comment.dislike = 0;
+   comment.save();
+   res.redirect('/detailMovie/'+req.body.fullName);
+
+});
 app.get('/detailMovie/:id',async(req,res)=>{
      const name = req.session.email;   
       var movie = await movieModel.findOne({fullName:req.params.id});
-       var movieBanner = await movieModel.find({}).sort({_id:-1}).limit(6);
-       var showing = await showingModel.findOne({fullName:req.params.id});
+       var movieBanner = await movieModel.find({}).sort({_id:-1}).limit(6);      
+       var showing = await showingModel.findOne({fullName:req.params.id}); 
+       var check = null;
+        if(req.session.email != null)
+       check = await cartModel.findOne({name:req.session.email,static:1,fullName:req.params.id});
+       console.log(check);
        try{
-       if(showing)
+       if(showing && check )
        {
+           const comment = await commentModel.find({fullName:req.params.id});
      res.render('partials/detailMovie.hbs',{
          query:name,
          movies: movie.toJSON(),
           movieBanner:movieBanner.map(movie => movie.toJSON()),
-          showing: showing.toJSON()
+          showing: showing.toJSON(),
+            check: check.toJSON(),
+            comment: comment.map(comment => comment.toJSON())
     });}
     else
     {

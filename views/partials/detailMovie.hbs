@@ -253,12 +253,35 @@
 													<button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
 												</div>
 											</li>
-										</ul>
 
-										<form action="#" class="form">
+											{{#each comment}}
+										<li class="comments__item">
+												<div class="comments__autor">
+													<img class="comments__avatar" src="../img/user.png" alt="">
+													<span class="comments__name">{{this.name}}</span>
+													<span class="comments__time">{{this.dateCreate}}, {{this.time}}</span>
+												</div>
+												<p class="comments__text">{{this.text}}.</p>
+												<div class="comments__actions">
+													<div class="comments__rate">
+														<button type="button"><i class="icon ion-md-thumbs-up"></i>{{this.like}}</button>
+
+														<button type="button">{{this.dislike}}<i class="icon ion-md-thumbs-down"></i></button>
+													</div>
+													
+													<button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
+													<button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
+												</div>
+											</li>
+											{{/each}}
+										</ul>
+												{{#if check }}
+										<form action="/addComment" method="post" class="form">
 											<textarea id="text" name="text" class="form__textarea" placeholder="Add comment"></textarea>
-											<button type="button" class="form__btn">Send</button>
+											<input name="fullName" value="{{movies.fullName}}" type="hidden">
+											<button type="submit" class="form__btn">Send</button>
 										</form>
+										{{/if}}
 									</div>
 								</div>
 								<!-- end comments -->
@@ -304,7 +327,7 @@
 												<p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
 											</li>
 										</ul>
-
+										{{#if check }}
 										<form action="#" class="form">
 											<input type="text" class="form__input" placeholder="Title">
 											<textarea class="form__textarea" placeholder="Review"></textarea>
@@ -314,6 +337,7 @@
 											</div>
 											<button type="button" class="form__btn">Send</button>
 										</form>
+										{{/if}}
 									</div>
 								</div>
 								<!-- end reviews -->
@@ -399,7 +423,7 @@
 							<div class="card">
 								<div class="card__cover">
 									<img src="{{this.image}}" alt="">
-									<a href="#" class="card__play">
+									<a  href="/detailMovie/{{this.fullName}}" class="card__play">
 										<i class="icon ion-ios-play"></i>
 									</a>
 								</div>
