@@ -34,25 +34,28 @@ app.get('/send',(req,res)=>{
     const rand = makeid(24);
      const host=req.get('host');
     const link="http://"+req.get('host')+"/verify/"+rand;
-    const msg ={
-          to:"webcardbank74@gmail.com",
-    from:"webcardbank74@gmail.com",
-    subject:"aaa",
-    html: "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>",
-    }
-    sgMail.send(msg,function(err,info){
-if(err)
-{console.log("email not send");}
-else
-{console.log("email sended")};
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'webcardbank74@gmail.com',
+            pass: 'card@!1234'
+        }
     });
+    
+    const mailOptions = {
+        from: 'webcardbank74@gmail.com', // sender address
+        to: 'thanhlam13102001@gmail.com', // list of receivers
+        subject: 'test mail', // Subject line
+        html: '<h1>this is a test mail.</h1>'// plain text body
+    };
+    
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+            console.log(err)
+        else
+            console.log(info);
+    })
 });
-function convert(str) {
-  var date = new Date(str),
-    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-    day = ("0" + date.getDate()).slice(-2);
-  return [date.getFullYear(), mnth, day].join(".");
-}
 app.post('/showingMovie/add',isAdmin,isAuth,async(req,res)=>{
    const body = req.body;
    const showing = new showingModel(body);
@@ -214,8 +217,8 @@ app.post('/checkpin',isAuth, async(req,res)=>{
     total = req.body.totalMoney;
     paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'AW1T5-R2qJvdLXBKK4qTYT4urvBIuvmunzyBNoG5Ud2pFEnjsmg8BnWqFHv9Q5jQ1JLflIck0FL0xkbW',
-  'client_secret':'EDCd6la-rJTRrZnurKGdyGzfnZLgxnOT3Th4PePCTGVKE66-Ios9rsBS7cIXQNX-F99l21UNqi_xpkOP'
+  'client_id': 'ARpGBiiGAE6fLp3Jz2ZZNNlH94BAVXbyJshm2IqIhiOC7z8UKnrUZMICjmE3lgZyW0Do3F-EcmBaVAzJ',
+  'client_secret':'EFdfzOg2KpeHVq6dRCB-Vkyi66Z-yy5vCNawtStU-1up4CRkMwDO5rgylfjKlkJPKm4b05_GMf7NR3nP'
   
 });
 const link="http://"+req.get('host')+"/Movies";
@@ -310,11 +313,13 @@ app.post('/checkBill',isAuth, async(req, res) => {
             {console.log("email not send");}
             else
             {   console.log("email sended");
-              return res.render('partials/note.hbs',{
-       text:" Comfirm Payment. PLEASE CHECK YOUR GMAIL",
-        query:req.session.email,admin:req.session.isAdmin,business:req.session.isBusiness
-   });
+              
             }
+            console.log(link);
+            return res.render('partials/note.hbs',{
+                text:" Comfirm Payment. PLEASE CHECK YOUR GMAIL",
+                 query:req.session.email,admin:req.session.isAdmin,business:req.session.isBusiness
+            });
                 });            
            
 });

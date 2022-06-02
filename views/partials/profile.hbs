@@ -50,12 +50,15 @@
                 <div class="col-md-8">
                     <div class="card mb-3">
                         <div class="card-body">
+                            <form action="/Users/add" method="post">
+                                <input type="hidden" name="id" value="{{user._id}}">
                             <div class="row">
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Full Name</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                   {{user.fullName}}
+                                   
+                                   <input name="fullName" style=" border:0;" value="{{user.fullName}}"/>
                                 </div>
                             </div>
                             <hr>
@@ -63,8 +66,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Email</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                   {{user.email}}
+                                <div class="col-sm-9 text-secondary">                                
+                                     {{user.email}}
                                 </div>
                             </div>
                             <hr>
@@ -72,8 +75,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Phone</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                   0{{user.phone}}
+                                <div class="col-sm-9 text-secondary">                                
+                                       <input name="phone" style=" border:0;" value="{{user.phone}}"/>
                                 </div>
                             </div>
                             <hr>
@@ -90,19 +93,22 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Date of Birth</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                   {{user.dob}}
+                                <div class="col-sm-9 text-secondary">                                   
+                                    <input style=" border:0;"  id ="dob" name ="dob" type="date" value="{{dob}}" />                               
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank" href="#">Edit</a>
+                                <div class="col-sm-12" style="display: flex;">
+                                    <input type="submit" class="btn btn-info " value="Edit"/>
+                                     &nbsp;&nbsp;&nbsp;&nbsp; 
+                                    <center><b> <p style="color:cornflowerblue;">{{viewTitle}}</p></b></center>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-
+                    </form>
 
                 </div>
             </div>
@@ -162,3 +168,4 @@
     <script src="../assets/js/templatemo.js"></script>
     <!-- Custom -->
     <script src="../assets/js/custom.js"></script>
+    

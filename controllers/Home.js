@@ -25,6 +25,12 @@ const isAuth = (req,res, next)=>{
         res.redirect('/Users');
     }
 }
+app.get('/thanhcong',async(req,res)=>{
+     const name = req.session.email;   
+     res.render('partials/thanhcong.hbs',{
+         query:name
+    });
+})
 app.get('/',async(req,res)=>{
      const name = req.session.email;   
       var movie = await movieModel.find({}).sort({_id:-1}).limit(4);
@@ -80,12 +86,17 @@ app.post('/addComment',isAuth,async(req,res)=>{
    res.redirect('/detailMovie/'+req.body.fullName);
 
 });
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
 app.get('/detailMovie/:id',async(req,res)=>{
      const name = req.session.email;   
       var movie = await movieModel.findOne({fullName:req.params.id});
        var movieBanner = await movieModel.find({}).sort({_id:-1}).limit(6);      
        var showing = await showingModel.findOne({fullName:req.params.id}); 
-       console.log(showing);
        var check = null;
         if(req.session.email != null)
        check = await cartModel.findOne({name:req.session.email,static:1,fullName:req.params.id});

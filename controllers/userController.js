@@ -23,7 +23,12 @@ const isAdmin = (req,res, next)=>{
         res.redirect('/');
     }
 }
-
+function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
 app.get('/register',(req,res)=>{
      const email = req.session.email;   
      res.render('partials/register.hbs',{query:email});
@@ -31,7 +36,12 @@ app.get('/register',(req,res)=>{
 app.get('/myProfile',isAuth,async(req,res)=>{
      const email = req.session.email;  
      const user = await userModel.findOne({email:email});
-     res.render('partials/profile.hbs',{query:email,user:user.toJSON()});
+     const viewTitle = req.session.err;
+     delete req.session.err;
+     console.log(user);
+     const dob = convert(user.dob.toJSON());
+
+     res.render('partials/profile.hbs',{query:email,user:user.toJSON(),dob:dob,viewTitle:viewTitle});
 });
 app.post('/add', async(req,res)=>{
      console.log(req.body);
@@ -91,10 +101,12 @@ function updateRecord(req,res)
     
      userModel.findOneAndUpdate({_id:req.body.id},req.body,{new:true},(err,user)=>{
         if(!err){
-                res.redirect('/Users/list');
+                req.session.err = "Update Successfull"
+                res.redirect('/Users/myProfile');
             }
             else
             {
+                res.redirect('/error');
                 console.log(err);
             }
         });
@@ -141,21 +153,30 @@ app.get('/addMovieForm', async(req,res)=>{
 app.post('/login', async(req,res)=>{
        const body = req.body;
     const users =  new userModel(body);
+    try{
     userModel.findOne({email:users.email}).then(user=>{
         if(!user){            
-         res.render('/Users',{view: "validate Email or Pasword"});
+         res.render('partials/login.hbs',{view: "validate Email or Password"});
     }
+        else{
     const pass = user.password;
     const validPassword =  bcrypt.compareSync(body.password,pass);
       if (!validPassword) {
-         res.render('/Users',{view: "validate Email or Pasword"});
+         res.render('partials/login.hbs',{view: "validate Email or Password"});
       }
+      else{
       if(user.isAdmin==1) req.session.isAdmin = true;
       req.session.isAuth =true;
       req.session.email = user.email;
       req.session.fullName = user.fullName;
       res.redirect('/');
-      });  
+         }     } });  
+    }
+    catch(error)
+    {
+        console.log(error);
+        redirect('/error');
+    }
 });
 app.get("/logout",(req,res)=>{
     req.session.destroy((err)=>{

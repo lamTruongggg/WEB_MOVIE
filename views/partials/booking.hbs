@@ -3,13 +3,13 @@
 <div class="body" style="margin-top:60px;">
  <div class="movie-containers" >
       <label>The Movie:</label>
-      <select id="movie">
+      <select id="movie"  style="width: 50%;">
         <option value="{{showing.price}}">{{showing.fullName}} </option>
       </select>
       <form method="post" action="/Movies/bookingMoviedate">
         <input type="hidden" name="fullName" value="{{showing.fullName}}">
        <label>The Date:</label>      
-      <select onchange="test1(this)"  id="date" style="width: 26%;">
+      <select onchange="test1(this); this.form.submit();"  id="date" style="width: 50%; margin-left:19px;">
         {{#if dates}}
         <option  disabled="disabled" selected="selected">{{dates}} </option>
         {{else}}
@@ -20,11 +20,10 @@
          {{/each}}
       </select>
       <input id="dateStart" name="dateStart" type="hidden" >
-      <input style="width: 60px; border-radius:6px; background-color:white;" type="submit">
       </form>
             <form method="post" action="/Movies/bookingMovietime">
        <label>The Time:</label>
-      <select id="times"  onchange="test2(this)" >
+      <select id="times"  onchange="test2(this); this.form.submit();" style="width: 50%; margin-left:19px;">
          {{#if times}}
         <option  disabled="disabled" selected="selected">{{times}} </option>
         {{else}}
@@ -37,7 +36,6 @@
       <input type="hidden" name="fullName" value="{{showing.fullName}}">
       <input value="{{dates}}" name="dateStart" type="hidden">
       <input name="time" id="time" type="hidden">
-            <input style="width: 60px; border-radius:6px; background-color:white;" type="submit">
       </form>
     </div>
 
@@ -201,17 +199,17 @@ function convert(str) {
   return [date.getFullYear(), mnth, day].join("-");
 }
       function test1(a) {
-    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =
 
   document.getElementById("dateStart").value = convert(x);
 }
  function test2(a) {
-    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
+    var x = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =
 
   document.getElementById("time").value = x;
 }
            function test(a) { 
-    var x =  document.getElementById("idshowings"); //crossbrowser solution =)
+    var x =  document.getElementById("idshowings"); //crossbrowser solution =
   var y =  document.getElementById("fullNames");
   document.getElementById("idshowing").value = x;
   document.getElementById("fullName").value = y;
