@@ -22,7 +22,12 @@ const isAuth = (req,res, next)=>{
         res.redirect('/Users');
     }
 }
-
+function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
 const isAdmin = (req,res, next)=>{
     if(req.session.isAdmin){
         next();
@@ -61,6 +66,10 @@ app.post('/showingMovie/add',isAdmin,isAuth,async(req,res)=>{
    const showing = new showingModel(body);
    console.log(req.body);
    showing.static=0;
+   const test = await showingModel.findOne({dateStart:req.body.dateStart,time:req.body.time,cinema:req.body.cinema});
+   console.log(test);
+   if(!test)
+   {
    try{
         showing.save();
         var i=1;
@@ -86,19 +95,26 @@ app.post('/showingMovie/add',isAdmin,isAuth,async(req,res)=>{
         while(i<=x)
         {
             const cinema = new cinemaModel({fullName:id,name:showing.fullName,seat:i,hell:a,static:0,dateStart:showing.dateStart,time:showing.time});
-            console.log(cinema);
             cinema.save();
             i++;
         };
         j++
     };
         res.redirect('/Movies/showingMovie');
+
 }
 catch(error)
     {
         res.status(500).send(error);
     }
+}
+else
+{
+    req.session.error = "Bi trung lich chieu phim khac "+ test.fullName +"-"+test.time +"-"+test.cinema+" !!!";
+    res.redirect('/Movies/showingMovie');
+    
 
+}
 });
 app.post('/add',isAdmin,isAuth, async(req,res)=>{
      console.log(req.body);
@@ -129,47 +145,53 @@ app.get('/',isAdmin,isAuth,(req,res)=>{
 });
 app.get('/bookingMovie/:id',isAuth ,async(req,res)=>{
     const email = req.session.email;   
-    const cinemas = await cinemaModel.find({fullName:req.params.id});
-    const cinemass = await cinemaModel.findOne({fullName:req.params.id});
-    const date =  await showingModel.find({fullName:cinemass.name}); 
-    const showing = await showingModel.findOne({_id:req.params.id});
+    const movieObject =  await showingModel.find({fullName:req.params.id}); 
+    const dateObject =  await showingModel.distinct('dateStart',{fullName:req.params.id}); 
+    const a = movieObject.map(movieObject => movieObject.toJSON());
+    const b=dateObject.map(b=>b.toJSON());
+    const date = b.map(b => convert(b));
+    a.map(a => a.dateStart = convert(a.dateStart));
+    console.log(a);
     res.render('partials/booking.hbs',{
         query: email,
-        //cinema: cinemas.map(cinemas => cinemas.toJSON()),
-        showing: showing.toJSON(),
-        date:date.map(date => date.toJSON()),
-        time:date.map(date => date.toJSON())
+        date: date,
+        time:a,
+        Name: req.params.id
     });
 });
 app.post('/bookingMoviedate',isAuth, async(req,res)=>{
-    const email = req.session.email;   console.log(req.body);
+    const email = req.session.email;  
      const time = await showingModel.find({fullName:req.body.fullName,dateStart:req.body.dateStart});
-      const date =  await showingModel.find({fullName:req.body.fullName}); 
+     const dateObject =  await showingModel.distinct('dateStart',{fullName:req.body.fullName}); 
+     const b=dateObject.map(b=>b.toJSON());
+     const date = b.map(b => convert(b));
          const showing = await showingModel.findOne({fullName:req.body.fullName});
          const cinemas = await cinemaModel.find({name:req.body.fullName});
        res.render('partials/booking.hbs',{
         query: email,
         //cinema: cinemas.map(cinemas => cinemas.toJSON()),
-        showing: showing.toJSON(),
-        date:date.map(date => date.toJSON()),
+        date:date,
         time:time.map(time => time.toJSON()),
-        dates:req.body.dateStart
+        dates:req.body.dateStart,
+        Name: req.body.fullName
     });
 });
 app.post('/bookingMovietime',isAuth, async(req,res)=>{
     const email = req.session.email;   console.log(req.body);
      const time = await showingModel.find({fullName:req.body.fullName,dateStart:req.body.dateStart});
-      const date =  await showingModel.find({fullName:req.body.fullName}); 
+     const dateObject =  await showingModel.distinct('dateStart',{fullName:req.body.fullName}); 
+     const b=dateObject.map(b=>b.toJSON());
+     const date = b.map(b => convert(b));
          const showing = await showingModel.findOne({fullName:req.body.fullName});
          const cinemas = await cinemaModel.find({name:req.body.fullName,dateStart:req.body.dateStart,time:req.body.time});
        res.render('partials/booking.hbs',{
         query: email,
         cinema: cinemas.map(cinemas => cinemas.toJSON()),
-        showing: showing.toJSON(),
-        date:date.map(date => date.toJSON()),
+        date:date,
         time:time.map(time => time.toJSON()),
         dates:req.body.dateStart,
-        times:req.body.time
+        times:req.body.time,
+        Name: req.body.fullName
     });
 });
 app.get('/shoppingCart',isAuth, async(req,res)=>{
@@ -465,9 +487,11 @@ app.get('/showingMovie',isAdmin,isAuth,async(req,res)=>{
     delete req.session.error;
     var showing = await showingModel.find({});
     var movie = await movieModel.find({});
+    const a = showing.map(showing => showing.toJSON());
+    console.log(a.map(a => a.dateStart = convert(a.dateStart)));
     res.render('partials/showingMovie.hbs',{
         query:email,
-        showings: showing.map(showing => showing.toJSON()),
+        showings: a,
         movies: movie.map(movie => movie.toJSON()),
         error:error
     });

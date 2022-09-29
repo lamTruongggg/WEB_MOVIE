@@ -20,7 +20,7 @@ app.use(
   session({
     secret:"key that will sign cookie",
      cookie: {
-    maxAge: 1000 * 60 * 12 // 1 week
+    maxAge: 1000 * 60 * 12*24 // 1 week
      },
     resave:true,
     saveUninitialized:true,
